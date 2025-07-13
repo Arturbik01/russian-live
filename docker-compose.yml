@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - zookeeper_data:/bitnami
+
+  kafka:
+    image: docker.io/bitnami/kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      # Роли: broker + controller
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      # Имя листенера для controller
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      # Настройки листенеров
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:19091
+      # Как Kafka будет доступна извне
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      # Кворум контроллеров (минимум 1)
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:19091
+      # ID и Process ID ноды
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ID=$(uuidgen)
+      # Сопоставление протоколов
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+    volumes:
+      - kafka_data:/bitnami
+
+  database:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=petmatch
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  kafka_data:
+  postgres_data:
+  zookeeper_data:

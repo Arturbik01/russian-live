@@ -1,0 +1,9 @@
+bot:
+  username: "Meow_sofi_dev_stand_bot"
+  TG_TOKEN: "${TG_TOKEN}"
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: "message_bot_group"
+      auto-offset-reset: earliest
