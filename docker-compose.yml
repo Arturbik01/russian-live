@@ -33,18 +33,28 @@ services:
     volumes:
       - kafka_data:/bitnami
 
-  database:
-    image: postgres
+  postgres:
+    image: postgres:17
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: petmatch
+      POSTGRES_USER: petmatch
+      POSTGRES_PASSWORD: petmatch
+#      POSTGRES_HOST_AUTH_METHOD: trust
+#      PGSSLMODE: disable
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=petmatch
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - user_network
+
 
 volumes:
   kafka_data:
   postgres_data:
   zookeeper_data:
+
+networks:
+  user_network:
+    driver: bridge

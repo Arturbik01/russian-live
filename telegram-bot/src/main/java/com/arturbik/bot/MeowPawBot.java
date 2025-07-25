@@ -37,17 +37,7 @@ public class MeowPawBot extends TelegramLongPollingBot {
 	public void onUpdateReceived(Update update) {
 		if (update.hasMessage() && update.getMessage().hasText()) {
 			String messageText = update.getMessage().getText();
-			Long chatId = update.getMessage().getChatId();
-
-			SendMessage message = new SendMessage();
-			message.setChatId(chatId.toString());
-			message.setText("Вы написали: " + messageText);
 			newMessageBotProducer.sendMessage(update.getMessage());
-			try {
-				execute(message);
-			} catch (TelegramApiException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

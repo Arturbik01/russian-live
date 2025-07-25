@@ -1,0 +1,28 @@
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: admin
+      first-name: Admin
+    filter:
+      create: All tasks
+    auto-deployment-enabled: true
+    history-level: audit
+    database:
+      schema-update: true
+server:
+  port: 9080
+
+logging:
+  level:
+    org.camunda.bpm: INFO
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://0.0.0.0:5432/petmatch
+    username: petmatch
+    password: petmatch
+  jpa:
+    hibernate:
+      ddl-auto: create
