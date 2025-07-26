@@ -4,6 +4,7 @@
     <option name="moduleMapping">
       <map>
         <entry key="FIND-TO-PET" value="JAVA-TG-EMPTY-ARCH" />
+        <entry key="camunda-worker" value="camunda-processor" />
       </map>
     </option>
   </component>

@@ -1,0 +1,48 @@
+# Camunda 8 Client Configuration
+camunda:
+  client:
+    mode: self-managed
+    zeebe:
+      enabled: true
+      # Исправлено: grpc-address должен быть без http:// и с правильным форматом
+      grpc-address: 127.0.0.1:26500
+      # REST адрес для Zeebe Gateway (если используется)
+      rest-address: http://localhost:8080
+    auth:
+      enabled: false  # Для локальной разработки
+
+# Zeebe Worker Configuration (если используете workers)
+zeebe:
+  client:
+    gateway-address: 127.0.0.1:26500
+    # Или используйте этот формат:
+    # grpc-address: 127.0.0.1:26500
+
+# Server Configuration
+server:
+  port: 9080
+
+# Logging
+logging:
+  level:
+    io.camunda: INFO
+    org.camunda: INFO
+
+# Database Configuration
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/petmatch
+    username: petmatch
+    password: petmatch
+  jpa:
+    hibernate:
+      ddl-auto: update  # create-drop для разработки, update для сохранения данных
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+# Kafka Configuration (если используете)
+spring.kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    group-id: petmatch-group

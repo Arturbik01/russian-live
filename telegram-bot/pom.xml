@@ -3,30 +3,98 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <!-- Наследование от родительского POM -->
     <parent>
         <groupId>com.arturbik</groupId>
         <artifactId>russian-live</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <!-- Указание относительного пути важно для корректного наследования -->
+        <relativePath>../</relativePath>
     </parent>
 
     <artifactId>telegram-bot</artifactId>
 
+    <!-- Свойства модуля, если отличаются от родительских -->
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Наследуется из родителя: maven.compiler.source/target = 17 -->
+        <!-- Наследуется из родителя: project.build.sourceEncoding = UTF-8 -->
     </properties>
 
     <dependencies>
+        <!-- Spring Boot Starter Web для REST контроллеров и т.д. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Spring Boot Starter Data JPA для работы с базой данных -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+
+        <!-- Spring Kafka для интеграции с Kafka -->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.6.0.Final</version>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
+        <!-- Telegram Bot Spring Boot Starter - версия управляется через dependencyManagement родителя -->
+        <dependency>
+            <groupId>org.telegram</groupId>
+            <artifactId>telegrambots-spring-boot-starter</artifactId>
+            <version>6.9.7.1</version>
+        </dependency>
+
+        <!-- PostgreSQL Driver - runtime scope, нужен только при запуске -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Lombok - scope provided наследуется из родителя -->
+        <!-- <dependency> -->
+        <!--     <groupId>org.projectlombok</groupId> -->
+        <!--     <artifactId>lombok</artifactId> -->
+        <!--     <scope>provided</scope> --> <!-- Уже есть в родителе -->
+        <!-- </dependency> -->
+
+        <!-- Spring Boot Actuator для мониторинга и метрик -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Тестирование -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- Spring Boot Maven Plugin для создания executable jar -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal> <!-- Создает fat jar -->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
