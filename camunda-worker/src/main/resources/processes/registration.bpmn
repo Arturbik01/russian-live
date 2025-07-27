@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1pdq21s" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.37.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:process id="Process_0ktu0fi" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="=test" target="chatId" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0eh4ag2</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0eh4ag2" sourceRef="StartEvent_1" targetRef="getName">
+      <bpmn:extensionElements />
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ou2haa" sourceRef="getName" targetRef="Activity_15aohu6" />
+    <bpmn:sequenceFlow id="Flow_0w2e4m9" sourceRef="Activity_15aohu6" targetRef="Activity_1f0yqso" />
+    <bpmn:callActivity id="Activity_1f0yqso" name="Правила">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="rules" propagateAllChildVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0w2e4m9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t5ok69</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="Event_0durrj3">
+      <bpmn:incoming>Flow_1t5ok69</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1t5ok69" sourceRef="Activity_1f0yqso" targetRef="Event_0durrj3" />
+    <bpmn:scriptTask id="getName" name="Запрос имени">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="getName" />
+        <zeebe:ioMapping>
+          <zeebe:input source="=test2" target="chatId" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0eh4ag2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ou2haa</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:userTask id="Activity_15aohu6" name="Запрос секретное слово">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ou2haa</bpmn:incoming>
+      <bpmn:outgoing>Flow_0w2e4m9</bpmn:outgoing>
+    </bpmn:userTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0ktu0fi">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="182" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ei2xuk_di" bpmnElement="Activity_15aohu6">
+        <dc:Bounds x="430" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kocsli_di" bpmnElement="Activity_1f0yqso">
+        <dc:Bounds x="590" y="80" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0durrj3_di" bpmnElement="Event_0durrj3">
+        <dc:Bounds x="752" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0rjh2in_di" bpmnElement="getName">
+        <dc:Bounds x="270" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0eh4ag2_di" bpmnElement="Flow_0eh4ag2">
+        <di:waypoint x="218" y="120" />
+        <di:waypoint x="270" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ou2haa_di" bpmnElement="Flow_0ou2haa">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="430" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w2e4m9_di" bpmnElement="Flow_0w2e4m9">
+        <di:waypoint x="530" y="120" />
+        <di:waypoint x="590" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t5ok69_di" bpmnElement="Flow_1t5ok69">
+        <di:waypoint x="690" y="120" />
+        <di:waypoint x="752" y="120" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

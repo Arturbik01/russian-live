@@ -5,7 +5,7 @@ camunda:
     zeebe:
       enabled: true
       # Исправлено: grpc-address должен быть без http:// и с правильным форматом
-      grpc-address: 127.0.0.1:26500
+      grpc-address: http://localhost:26500
       # REST адрес для Zeebe Gateway (если используется)
       rest-address: http://localhost:8080
     auth:
