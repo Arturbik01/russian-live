@@ -1,17 +1,26 @@
 bot:
   username: "Meow_sofi_dev_stand_bot"
   TG_TOKEN: "${TG_TOKEN}"
+server:
+  port: 8888
 spring:
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
       group-id: "message_bot_group"
       auto-offset-reset: earliest
+
   datasource:
+    # Используй localhost, так как приложение запускается вне Docker
+    url: jdbc:postgresql://localhost:5432/common_postgres
+    username: common_postgres
+    password: common_postgres # Убедись, что пароль совпадает с тем, что в docker-compose
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/common-postgres-db
-    username: common-postgres-db-user
-    password: common-postgres-db-password
+
   jpa:
+    # Рекомендуется указать диалект явно
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     show-sql: true
+    hibernate:
+      ddl-auto: update

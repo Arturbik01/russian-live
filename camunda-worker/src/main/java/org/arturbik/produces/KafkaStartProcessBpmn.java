@@ -15,6 +15,6 @@ public class KafkaStartProcessBpmn implements CommandLineRunner {
 	@KafkaListener(topics = "new_message_bot", groupId = "camunda-processor")
 	@Override
 	public void run(String... args) throws Exception {
-		zeebeClient.newCreateInstanceCommand().bpmnProcessId("registration").latestVersion().variable("chatId", args[0]).send().join();
+		zeebeClient.newCreateInstanceCommand().bpmnProcessId("registration").latestVersion().variable("chatId", 111).send().join();
 	}
 }

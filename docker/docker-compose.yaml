@@ -395,23 +395,6 @@ services:
     volumes:
       - postgres-web:/var/lib/postgresql/data
 
-  common-postgres-db:
-    container_name: common-postgres-db
-    image: postgres:${POSTGRES_VERSION}
-    healthcheck:
-      test: pg_isready -d common-postgres-db -U common-postgres-db-user
-      interval: 5s
-      timeout: 15s
-      retries: 30
-    environment:
-      POSTGRES_DB: common-postgres-db
-      POSTGRES_USER: common-postgres-db-user
-      POSTGRES_PASSWORD: common-postgres-db-password
-    networks:
-      - common_network
-    volumes:
-      - postgres-common:/var/lib/postgresql/data
-
   mailpit:
     # If you want to use your own SMTP server, you can remove this container
     # and configure RESTAPI_MAIL_HOST, RESTAPI_MAIL_PORT, REST_API_MAIL_USER,
@@ -531,6 +514,30 @@ services:
     networks:
       - web-modeler
 
+  kafka:
+    image: apache/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # Configure listeners for both docker and host communication
+      KAFKA_LISTENERS: CONTROLLER://localhost:9091,HOST://0.0.0.0:9092,DOCKER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: HOST://localhost:9092,DOCKER://kafka:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,DOCKER:PLAINTEXT,HOST:PLAINTEXT
+
+      # Settings required for KRaft mode
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9091
+
+      # Listener to use for broker-to-broker communication
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+
+      # Required for a single node cluster
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka_data:/tmp/kafka
+
 volumes:
   zeebe:
   elastic:
@@ -539,7 +546,7 @@ volumes:
   operate_tmp:
   tasklist_tmp:
   postgres-web:
-  postgres-common:
+  kafka_data:
 
 networks:
   # Note there are three bridge networks: One for Camunda Platform, one for Identity and one for Web Modeler.
@@ -550,5 +557,3 @@ networks:
   camunda-platform:
   identity-network:
   web-modeler:
-  common_network:
-    driver: bridge

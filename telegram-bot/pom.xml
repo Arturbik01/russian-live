@@ -10,7 +10,7 @@
         <artifactId>russian-live</artifactId>
         <version>1.0-SNAPSHOT</version>
         <!-- Указание относительного пути важно для корректного наследования -->
-        <relativePath>../</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>telegram-bot</artifactId>
@@ -33,7 +33,22 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <!-- Совместимость с javax.xml.bind -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
 
+        <!-- Новые Jakarta API (если нужно) -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+        </dependency>
         <!-- Spring Kafka для интеграции с Kafka -->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
